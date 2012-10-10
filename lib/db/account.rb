@@ -8,6 +8,7 @@ module DeltaControl
     property :password, String
 
     has n, :accounts
+    has n, :logs
 
     def to_struct
       OpenStruct.new(
@@ -28,6 +29,7 @@ module DeltaControl
     property :password, String
 
     belongs_to :user
+    has n, :logs
 
   end
 

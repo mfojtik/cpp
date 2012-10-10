@@ -13,11 +13,14 @@ Deltacloud[:deltacloud].require!
 
 $:.unshift File.dirname(__FILE__)
 require './app'
+
 require './lib/rack/rack_overide_deltacloud_auth'
+require './lib/rack/rack_api_logger'
 
 run Rack::Builder.new {
   use Rack::MatrixParams
   use Rack::OverideDeltacloudAuth
+  use Rack::APILogger
   run Rack::URLMap.new(
     '/' => DeltaControl::App,
     '/api' => Deltacloud[:deltacloud].klass

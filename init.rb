@@ -6,6 +6,7 @@ require 'deltacloud/api'
 require_relative './lib/helpers/views_helper.rb'
 require_relative './lib/helpers/app_helper.rb'
 
+require_relative './lib/db/log.rb'
 require_relative './lib/db/account.rb'
 
 module DeltaControl

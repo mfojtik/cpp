@@ -21,11 +21,11 @@ module Rack
           account ||= accounts.first
           env['HTTP_AUTHORIZATION'] = "Basic "+Base64.encode64("#{account.username}:#{account.password}")
           env['HTTP_X_DELTACLOUD_PROVIDER'] = account.provider
+          env['HTTP_X_CCP_ACCOUNT'] = account.id
+          env['HTTP_X_CCP_USER'] = user.id
         end
       end
-      status, headers, body = @app.call(env)
-      headers['Date'] = Time.new.httpdate if not headers['Date']
-      [status, headers, body]
+      @app.call(env)
     end
 
   end
