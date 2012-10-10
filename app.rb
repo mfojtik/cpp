@@ -4,7 +4,6 @@ module DeltaControl
   class App < Sinatra::Base
 
     enable :sessions
-    enable :dump_errors
 
     configure(:development) { set :session_secret, "123456" }
 
@@ -15,7 +14,7 @@ module DeltaControl
 
     # Enable flash[] messages through session
     before do
-      @_flash, session[:_flash] = session[:_flash], nil if session[:_flash]
+      @_flash, session['_flash'] = session['_flash'], nil if session['_flash']
     end
 
     get '/' do

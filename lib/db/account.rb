@@ -64,7 +64,7 @@ module DeltaControl
           driver.to_sym,
           :user => username,
           :password => password,
-          :provider => provider
+          :provider => provider.empty? ? nil : provider
         ).realms.empty?
       rescue => e
         p e.message

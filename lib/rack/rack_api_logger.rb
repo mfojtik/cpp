@@ -11,7 +11,8 @@ module Rack
 
     def call(env)
       req = Rack::Request.new(env)
-      request_headers = env.select {|k,v| k.start_with? 'HTTP_'}
+      request_headers = env.select {|k,v| k.start_with? 'HTTP_' and !k.start_with? 'HTTP_AUTHORIZATION' }
+      .reject { |k, v| k =~ /CCP/ }
       .collect {|pair| [pair[0].sub(/^HTTP_/, ''), pair[1]]}
       .collect {|pair| pair.join(": ") << "<br>"}
       .sort

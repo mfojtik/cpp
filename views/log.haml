@@ -13,7 +13,7 @@
           %td=@log.uri
         %tr
           %th HTTP status
-          %td=@log.status
+          %td=format_status @log.status
         %tr
           %th HTTP params
           %td=@log.params
@@ -28,9 +28,11 @@
           %td=@log.account.provider
         %tr
           %th HTTP headers
-          %td=@log.headers
+          %td
+            %small=@log.headers
         %tr
           %th Date
           %td=@log.created_at
   .span8
-    %pre=format_log_body @log.body
+    %pre
+      %small=format_log_body @log.body

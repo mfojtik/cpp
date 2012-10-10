@@ -20,7 +20,7 @@ module DeltaControl
     def flash_block_for(message_type)
       return unless flash[message_type]
       capture_haml do
-        haml_tag :div, :class => [ 'alert', 'fade', 'in', 'alert-'+message_type.to_s ] do
+        haml_tag :div, :class => [ 'alert', 'fade', 'in', 'alert-'+message_type.to_s ], 'data-dismiss' => 'alert' do
           haml_tag :a, :class => :close, :href => '#' do
             haml_concat 'x'
           end
