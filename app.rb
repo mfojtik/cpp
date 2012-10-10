@@ -17,7 +17,27 @@ module DeltaControl
     end
 
     get '/accounts' do
+      @accounts = current_user.accounts
       haml :accounts
+    end
+
+    get '/accounts/new' do
+      haml :new_account
+    end
+
+    post '/accounts' do
+      account = Account.new(params[:account])
+      current_user.accounts << account
+      current_user.save
+      flash[:notice] = 'Account "%s" successfully created.' % params[:account][:name]
+      redirect url('/accounts')
+    end
+
+    get '/accounts/:id/delete' do
+      account = current_user.accounts.first(:id => params[:id])
+      flash[:notice] = 'Account "%s" successfully removed.' % account.name
+      account.destroy!
+      redirect url('/accounts')
     end
 
   end

@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'haml'
 require 'ostruct'
+require 'deltacloud/api'
 
 require_relative './lib/helpers/views_helper.rb'
 require_relative './lib/helpers/app_helper.rb'

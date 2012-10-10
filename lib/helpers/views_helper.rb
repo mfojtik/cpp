@@ -39,5 +39,16 @@ module DeltaControl
       last_url_segment.nil? ? 'NoTitleFixMe' : last_url_segment.capitalize
     end
 
+    def cgroup(id, label='', &block)
+      haml_tag :div, :class => :"control-group" do
+        haml_tag :label, :class => :"control-label", :for => id do
+          haml_concat label
+        end
+        haml_tag :div, :class => :controls do
+          haml_concat(capture_haml(&block))
+        end
+      end
+    end
+
   end
 end

@@ -5,7 +5,7 @@ module DeltaControl
     def current_user
       (session[:user_id] ||= 1) if self.class.development?
       return logout! unless logged_in?
-      @_current_user ||= User.get(session[:user_id]).to_struct
+      @_current_user ||= User.get(session[:user_id])
     end
 
     def current_user_reload

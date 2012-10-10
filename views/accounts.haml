@@ -1,2 +1,28 @@
 .pull-right
   %a{ :href => url('/accounts/new'), :class => 'btn btn-primary'} Add Account
+
+%table.table.table-bordered
+  %thead
+    %tr.well
+      %th Name
+      %th Provider
+      %th User
+      %th Actions
+  %tbody
+    - @accounts.each do |account|
+      %tr
+        %td
+          %strong=account.name
+        %td
+          %span.badge=account.driver
+        %td=account.username
+        %td
+          .btn-group
+            %a{ :href => '#', :class => "btn dropdown-toggle", :"data-toggle" => "dropdown" }
+              Settings
+              %span.caret
+            %ul.dropdown-menu
+              %li
+                %a{ :href => url('/accounts/%s/edit' % account.id)} Edit
+              %li
+                %a{ :href => url('/accounts/%s/delete' % account.id)} Delete

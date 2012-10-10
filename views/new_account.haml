@@ -1,0 +1,20 @@
+- @title = 'New Cloud Account'
+%form{ :action => url('/accounts'), :method => :post, :class => 'form-horizontal well' }
+  - cgroup :name, 'Name' do
+    %input{ :type => 'text', :name => 'account[name]', :id => :name }
+    %span.help-inline
+      %small Account name (eg. 'My RHEV-M setup')
+  - cgroup :username, 'API username' do
+    %input{ :type => 'text', :name => 'account[username]', :id => :username }
+  - cgroup :username, 'API password' do
+    %input{ :type => 'password', :name => 'account[password]', :id => :password }
+  - cgroup :username, 'API provider' do
+    %input{ :type => 'text', :name => 'account[provider]', :id => :provider }
+    %span.help-inline
+      %small Some providers require API_PROVIDER set to their API entrypoint URL
+  - cgroup :username, 'Provider' do
+    %select{ :name => 'account[driver]' }
+      - Deltacloud.drivers.each do |name, description|
+        %option{ :value => name}=description[:name]
+  - cgroup :submit do
+    %button{ :type => :submit, :class => 'btn btn-primary'} Continue

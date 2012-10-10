@@ -21,6 +21,7 @@ module DeltaControl
     include DataMapper::Resource
 
     property :id, Serial
+    property :name, String
     property :driver, String
     property :provider, Text
     property :username, String
