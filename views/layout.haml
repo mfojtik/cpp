@@ -1,0 +1,42 @@
+!!! 5
+%html{ :lang => :en }
+  %head
+    %meta{ :charset => 'utf-8' }
+    %title CIMI Client
+    = style_tags 'bootstrap.min', 'bootstrap-responsive.min', :custom
+    = script_tags :jquery, 'bootstrap.min'
+    %body
+      .navbar.navbar-fixed-top
+        .navbar-inner
+          .container-fluid
+            %p{ :class => 'pull-right'}
+              %small Logged as #{current_user.name}
+            %a.brand{ :href => '/' } Cloud Control Panel
+            .nav-collapse
+              %ul.nav
+                %li
+                  %a{ :href => url('/accounts')} Accounts
+                %li.dropdown
+                  %a{ :href => '#', :class => 'dropdown-toggle', :'data-toggle' => 'dropdown'}
+                    Usage
+                    %b.caret
+                  %ul.dropdown-menu
+                    %li
+                      %a{ :href => url('/resources')} Resources
+                    %li
+                      %a{ :href => url('/requests')} Requests
+
+      .container
+        .content
+          .page-header
+            %h1=current_url_title
+          .row
+            .span12#main
+              - [ :info, :error, :success ].map do |message|
+                = flash_block_for message
+            = yield
+
+        %footer
+          %p
+            &copy; 2009-2012 The Apache Software Foundation and individual contributors.
+
