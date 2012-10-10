@@ -19,6 +19,7 @@ module DeltaControl
 
   def self.db_seed
     User.create(:name => 'admin', :password => 'redhat') unless User.first(:name => 'admin')
+    User.create(:name => 'test', :password => 'redhat') unless User.first(:name => 'test')
   end
 
   def self.db_init
@@ -35,5 +36,3 @@ module DeltaControl
   end
 
 end
-
-DeltaControl.db_init

@@ -11,16 +11,22 @@ module Rack
 
     def call(env)
       req = Rack::Request.new(env)
+      request_headers = env.select {|k,v| k.start_with? 'HTTP_'}
+      .collect {|pair| [pair[0].sub(/^HTTP_/, ''), pair[1]]}
+      .collect {|pair| pair.join(": ") << "<br>"}
+      .sort
       status, headers, body = @app.call(env)
-      if req.path =~ /^\/api\// and !env['HTTP_X_CCP_ACCOUNT'].nil?
+      if req.path =~ /^\/api/ and !env['HTTP_X_CCP_ACCOUNT'].nil?
         DeltaControl::Log.create(
           :method => req.request_method,
           :uri => req.path,
           :driver => env['HTTP_X_DELTACLOUD_DRIVER'] || Thread.current[:driver],
-          :status => status,
+          :status => status.to_i,
           :params => JSON.dump(req.params),
+          :headers => request_headers.join,
           :user_id => env['HTTP_X_CCP_USER'],
-          :account_id => env['HTTP_X_CCP_ACCOUNT']
+          :account_id => env['HTTP_X_CCP_ACCOUNT'],
+          :body => body.first
         )
       end
       [status, headers, body]

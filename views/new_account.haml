@@ -4,17 +4,21 @@
     %input{ :type => 'text', :name => 'account[name]', :id => :name }
     %span.help-inline
       %small Account name (eg. 'My RHEV-M setup')
+  - cgroup :driver, 'Provider' do
+    %select{ :name => 'account[driver]', :id => :driver }
+      - Deltacloud.drivers.each do |name, description|
+        %option{ :value => name}=description[:name]
   - cgroup :username, 'API username' do
     %input{ :type => 'text', :name => 'account[username]', :id => :username }
-  - cgroup :username, 'API password' do
+  - cgroup :password, 'API password' do
     %input{ :type => 'password', :name => 'account[password]', :id => :password }
-  - cgroup :username, 'API provider' do
+  - cgroup :provider, 'API provider' do
     %input{ :type => 'text', :name => 'account[provider]', :id => :provider }
     %span.help-inline
       %small Some providers require API_PROVIDER set to their API entrypoint URL
-  - cgroup :username, 'Provider' do
-    %select{ :name => 'account[driver]' }
-      - Deltacloud.drivers.each do |name, description|
-        %option{ :value => name}=description[:name]
+  - cgroup :visibility, 'Shared account?' do
+    %input{ :type => 'checkbox', :name => 'account[visibility]', :value => 'public'}
+    %span.help-inline
+      %small Checking the box will make this account available for other users
   - cgroup :submit do
     %button{ :type => :submit, :class => 'btn btn-primary'} Continue

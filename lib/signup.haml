@@ -1,0 +1,15 @@
+- @title = 'Sign up'
+.row-fluid
+  .span3
+  .span6.well
+    %form{ :action => '/signup', :method => 'post', :class => 'form-horizontal' }
+      - cgroup :username, 'User' do
+        %input{ :type => :text, :name => :user, :id => :user}
+      - cgroup :password, 'Password' do
+        %input{ :type => :password, :name => :password, :id => :password}
+      - cgroup :password_again, 'Confirm Password' do
+        %input{ :type => :password, :name => :password2, :id => :password2}
+      - cgroup :submit do
+        %button{ :class => 'btn btn-primary'} Continue
+        %a{ :href => '/login', :class => 'btn'} Login
+  .span3

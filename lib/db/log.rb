@@ -8,10 +8,11 @@ module DeltaControl
     property :method, String
     property :uri, String
     property :driver, String
-    property :headers, String
-    property :status, String
+    property :headers, Text
+    property :status, Integer
     property :params, Text
-
+    property :body, Text
+    property :created_at, DateTime
     belongs_to :user
     belongs_to :account
 

@@ -1,0 +1,63 @@
+- @title = @account.name
+
+.row-fluid
+  .span6
+    %table.table.well
+      %tbody
+        %tr
+          %th API Username
+          %td=@account.username
+        - if @account.owner == current_user
+          %tr
+            %th API Password
+            %td
+              %a.secret-h{ :href => 'javascript:$(".secret").show();$(".secret-h").remove();'} show
+              %span.secret{:style => 'display:none;'}=@account.password
+        %tr
+          %th API Provider
+          %td
+            %small=@account.provider != '' ? @account.provider : '<em>Not available</em>'
+        %tr
+          %th Account Owner
+          %td=@account.owner.name
+        %tr
+          %th Registred
+          %td=Time.parse(@account.created_at.to_s).ago_in_words
+  .span6
+    %table.table
+      %tbody
+        %tr
+          %th # of requests
+          %td=@account.logs.count
+        -if @account.logs.count != 0
+          %tr
+            %th Last request
+            %td=Time.parse(@account.logs.all(:order => [ :created_at.desc ], :limit => 1).first.created_at.to_s).ago_in_words
+          %tr
+            %th Last used by
+            %td
+              =@account.logs.all(:order => [ :created_at.desc ], :limit => 1).first.user.name
+              ='/'
+              =@account.logs.all(:order => [ :created_at.desc ], :limit => 1).first.account.name
+
+.row-fluid
+  .span12
+    %table.table.table-bordered.table-condensed.table-striped
+      %tbody
+        - @account.logs.all(:order => [ :created_at.desc], :limit => 30).each do |log|
+          %tr
+            %td{ :style => 'width:100px;text-align:right;'}
+              %strong.badge=log.method
+            %td
+              %code=log.uri
+            %td
+              %small=log.params
+            %td{ :style => 'width:40px;text-align:center;'}=format_status log.status
+            %td
+              =log.user.name
+              ='/'
+              %a{:href => url('/accounts/%s' % log.account.id)}=log.account.name
+            %td=Time.parse(log.created_at.to_s).ago_in_words
+            %td{ :style => 'width:15px'}
+              %a{ :href => url("/logs/%s" % log.id)}
+                %i.icon-search

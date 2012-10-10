@@ -12,7 +12,10 @@ end
 Deltacloud[:deltacloud].require!
 
 $:.unshift File.dirname(__FILE__)
+
 require './app'
+
+DeltaControl.db_init
 
 require './lib/rack/rack_overide_deltacloud_auth'
 require './lib/rack/rack_api_logger'

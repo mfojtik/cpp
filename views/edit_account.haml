@@ -1,0 +1,24 @@
+- @title = @account.name
+%form{ :action => url('/accounts/%s' % @account.id), :method => :post, :class => 'form-horizontal well' }
+  - cgroup :name, 'Name' do
+    %input{ :type => 'text', :name => 'account[name]', :id => :name, :value => @account.name }
+    %span.help-inline
+      %small Account name (eg. 'My RHEV-M setup')
+  - cgroup :driver, 'Provider' do
+    %select{ :name => 'account[driver]', :id => :driver, :value => @account.driver }
+      - Deltacloud.drivers.each do |name, description|
+        %option{ :value => name, :selected => (@account.driver == name.to_s) ? 'selected' : nil}=description[:name]
+  - cgroup :username, 'API username' do
+    %input{ :type => 'text', :name => 'account[username]', :id => :username, :value => @account.username }
+  - cgroup :password, 'API password' do
+    %input{ :type => 'password', :name => 'account[password]', :id => :password, :value => @account.password }
+  - cgroup :provider, 'API provider' do
+    %input{ :type => 'text', :name => 'account[provider]', :id => :provider, :value => @account.provider }
+    %span.help-inline
+      %small Some providers require API_PROVIDER set to their API entrypoint URL
+  - cgroup :visibility, 'Shared account?' do
+    %input{ :type => 'checkbox', :name => 'account[visibility]', :value => 'public', :checked => (@account.visibility == :public) ? 'checked' : nil}
+    %span.help-inline
+      %small Checking the box will make this account available for other users
+  - cgroup :submit do
+    %button{ :type => :submit, :class => 'btn btn-primary'} Save

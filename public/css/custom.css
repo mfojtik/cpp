@@ -1,3 +1,7 @@
-body .container .content {
+body .content {
   margin-top : 50px;  /* Fix the position of content because of fixed menu */
+}
+
+table#accounts tbody td {
+  vertical-align : middle;
 }

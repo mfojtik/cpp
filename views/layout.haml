@@ -9,34 +9,37 @@
       .navbar.navbar-fixed-top
         .navbar-inner
           .container-fluid
-            %p{ :class => 'pull-right'}
-              %small Logged as #{current_user.name}
-            %a.brand{ :href => '/' } Cloud Control Panel
+            -if logged_in?
+              %p{ :class => 'pull-right', :style => 'margin-top:8px;'}
+                %small Logged as #{current_user.name}
+                |
+                %small
+                  %a{ :href => url('/logout')} Logout
+            %a.brand{ :href => '/' }
+              ='<span style="color:#08c;">Delta</span>cloud'
+              Control Panel
             .nav-collapse
               %ul.nav
+                - if logged_in?
+                  %li.active
+                    %a{ :href => url('/accounts')}
+                      %i.icon-globe
+                      Accounts
                 %li
-                  %a{ :href => url('/accounts')} Accounts
-                %li.dropdown
-                  %a{ :href => '#', :class => 'dropdown-toggle', :'data-toggle' => 'dropdown'}
-                    Usage
-                    %b.caret
-                  %ul.dropdown-menu
-                    %li
-                      %a{ :href => url('/resources')} Resources
-                    %li
-                      %a{ :href => url('/requests')} Requests
+                  %a{ :href => url('/api') } API
+                %li
+                  %a{ :href => url('/api/docs') } Documentation
 
-      .container
+      .container-fluid
         .content
-          .page-header
-            %h1=current_url_title
-          .row
+          %h1=current_url_title
+          .row-fluid
             .span12#main
               - [ :info, :error, :success ].map do |message|
                 = flash_block_for message
-            = yield
+              = yield
 
-        %footer
+        %footer.pull-right
           %p
-            &copy; 2009-2012 The Apache Software Foundation and individual contributors.
+            %small &copy; 2009-2012 The Apache Software Foundation and individual contributors.
 

@@ -1,28 +1,33 @@
-.pull-right
-  %a{ :href => url('/accounts/new'), :class => 'btn btn-primary'} Add Account
-
-%table.table.table-bordered
+%table#accounts.table.table-bordered.table-striped.table-condensed
   %thead
     %tr.well
       %th Name
       %th Provider
       %th User
-      %th Actions
+      %th Health
+      %th Visibility
+      %th{ :style => 'width : 150px'}
+        %span.pull-right
+          %a{ :href => url('/accounts/new'), :class => 'btn btn-primary'} Create Account
   %tbody
     - @accounts.each do |account|
+      :javascript
+        var jqxhr = $.post("/accounts/#{account.id}/check", function() {
+        })
+        jqxhr.success(function() { $("td#account-#{account.id} > i").removeClass('icon-refresh').addClass('icon-ok') })
+        jqxhr.error(function() { $("td#account-#{account.id} > i").removeClass('icon-refresh').addClass('icon-exclamation-sign') } )
       %tr
         %td
-          %strong=account.name
-        %td
-          %span.badge=account.driver
+          %a{ :href => url('/accounts/%s' % account.id) }
+            %strong=account.name
+        %td=Deltacloud.drivers[account.driver.to_sym][:name]
         %td=account.username
-        %td
-          .btn-group
-            %a{ :href => '#', :class => "btn dropdown-toggle", :"data-toggle" => "dropdown" }
-              Settings
-              %span.caret
-            %ul.dropdown-menu
-              %li
-                %a{ :href => url('/accounts/%s/edit' % account.id)} Edit
-              %li
-                %a{ :href => url('/accounts/%s/delete' % account.id)} Delete
+        %td{ :id => "account-#{account.id}", :class => 'health'}
+          %i{ :class => 'icon-refresh'}
+        %td=account.visibility
+        %td{ :style => 'text-align:center' }
+          - if account.owner == current_user
+            %a.btn{ :href => url('/accounts/%s/edit' % account.id)} Edit
+            %a.btn.btn-danger{ :href => url('/accounts/%s/delete' % account.id)} Delete
+          - else
+            %strong=account.owner.name

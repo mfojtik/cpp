@@ -20,7 +20,7 @@ module DeltaControl
     def flash_block_for(message_type)
       return unless flash[message_type]
       capture_haml do
-        haml_tag :div, :class => [ 'alert', 'fade', 'in', message_type ] do
+        haml_tag :div, :class => [ 'alert', 'fade', 'in', 'alert-'+message_type.to_s ] do
           haml_tag :a, :class => :close, :href => '#' do
             haml_concat 'x'
           end
@@ -48,6 +48,19 @@ module DeltaControl
           haml_concat(capture_haml(&block))
         end
       end
+    end
+
+    def format_status(status)
+      case status
+        when 200..399 then '<span class="label label-success">%i</span>' % status
+        when 400..499 then '<span class="label label-warning">%i</span>' % status
+        when 500..599 then '<span class="label label-important">%i</span>' % status
+        else '<span class="label">%i</span>' % status
+      end
+    end
+
+    def format_log_body(body)
+      body.gsub('<', '&lt;').gsub('>', '&gt;')
     end
 
   end
