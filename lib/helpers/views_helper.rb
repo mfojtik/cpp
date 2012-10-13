@@ -63,5 +63,27 @@ module DeltaControl
       body.gsub('<', '&lt;').gsub('>', '&gt;')
     end
 
+    def status_to_text(code)
+      case code
+      when 200; "OK"
+      when 201; "Created"
+      when 202; "Accepted"
+      when 204; "No Content"
+      when 301; "Moved Permanently"
+      when 303; "See Other"
+      when 400; "Bad Request"
+      when 401; "Unauthorized"
+      when 403; "Forbidden"
+      when 404; "Not Found"
+      when 405; "Method Not Allowed"
+      when 406; "Not Acceptable"
+      when 500; "Internal Server Error"
+      when 502; "Backend Server Error"
+      when 504; "Gateway Timeout"
+      when 501; "Not Supported"
+      else 'Unknown'
+      end
+    end
+
   end
 end

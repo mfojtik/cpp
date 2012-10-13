@@ -33,7 +33,7 @@ GEM
       dm-validations (~> 1.2.0)
     data_objects (0.10.8)
       addressable (~> 2.1)
-    deltacloud-core (1.0.3)
+    deltacloud-core (1.0.4)
       aws (>= 2.5.4)
       cloudfiles
       cloudservers
@@ -50,11 +50,10 @@ GEM
       rake (>= 0.8.7)
       rbovirt (>= 0.0.12)
       rbvmomi
-      require_relative
       rest-client
       savon (>= 1.0.0)
       sinatra (>= 1.3.0)
-      sinatra-rabbit (>= 1.0.10)
+      sinatra-rabbit (>= 1.0.11)
       thin (>= 1.2.5)
       uuidtools (>= 2.1.1)
       waz-storage (>= 1.1.0)
@@ -145,7 +144,6 @@ GEM
       builder
       nokogiri (>= 1.4.1)
       trollop
-    require_relative (1.0.3)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     ruby-hmac (0.4.0)
@@ -186,7 +184,7 @@ PLATFORMS
 
 DEPENDENCIES
   data_mapper
-  deltacloud-core
+  deltacloud-core (>= 1.0.4)
   dm-constraints
   dm-serializer
   dm-sqlite-adapter

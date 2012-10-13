@@ -1,6 +1,6 @@
 source :rubygems
 
-gem 'deltacloud-core', :require => 'deltacloud_rack'
+gem 'deltacloud-core', '>=1.0.4', :require => 'deltacloud_rack'
 
 gem 'data_mapper'
 gem 'dm-serializer'
