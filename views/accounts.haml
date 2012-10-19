@@ -1,3 +1,6 @@
+%ul.breadcrumb
+  %li Accounts
+
 %table#accounts.table.table-bordered.table-striped.table-condensed
   %thead
     %tr.well
@@ -6,6 +9,7 @@
       %th User
       %th Health
       %th Visibility
+      %th Callbacks
       %th{ :style => 'width : 150px'}
         %span.pull-right
           %a{ :href => url('/accounts/new'), :class => 'btn btn-primary'} Create Account
@@ -25,6 +29,8 @@
         %td{ :id => "account-#{account.id}", :class => 'health'}
           %i{ :class => 'icon-refresh'}
         %td=account.visibility
+        %td
+          %a{ :href => url('/accounts/%s/callbacks' % account.id)}=account.callbacks.size
         %td{ :style => 'text-align:center' }
           - if account.owner == current_user
             %a.btn{ :href => url('/accounts/%s/edit' % account.id)} Edit

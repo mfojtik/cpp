@@ -3,11 +3,12 @@ require 'haml'
 require 'ostruct'
 require 'deltacloud/api'
 
-require_relative './lib/helpers/views_helper.rb'
-require_relative './lib/helpers/app_helper.rb'
+require_relative './lib/helpers/views_helper'
+require_relative './lib/helpers/app_helper'
 
-require_relative './lib/db/log.rb'
-require_relative './lib/db/account.rb'
+require_relative './lib/db/log'
+require_relative './lib/db/account'
+require_relative './lib/db/callback'
 
 module DeltaControl
 
@@ -22,8 +23,8 @@ module DeltaControl
     User.create(:name => 'test', :password => 'redhat') unless User.first(:name => 'test')
   end
 
-  def self.db_init
-    DataMapper::Logger.new($stdout, :debug)
+  def self.db_init(opts={})
+    DataMapper::Logger.new($stdout, :debug) unless opts[:no_logger]
     begin
       DataMapper.setup(:default, config.database)
     rescue LoadError => e
@@ -32,7 +33,7 @@ module DeltaControl
     end
     DataMapper.finalize
     DataMapper.auto_upgrade!
-    db_seed
+    db_seed unless opts[:no_seed]
   end
 
 end

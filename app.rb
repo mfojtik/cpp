@@ -102,6 +102,43 @@ module DeltaControl
       status 200
     end
 
+    get '/accounts/:id/callbacks' do
+      @account = current_user.available_accounts.get(params[:id])
+      @callbacks = @account.callbacks
+      haml :callbacks
+    end
+
+    get '/accounts/:id/callbacks/new' do
+      @account = current_user.available_accounts.get(params[:id])
+      haml :new_callback
+    end
+
+    post '/accounts/:id/callbacks' do
+      callback = Callback.new(params[:callback])
+      @account = current_user.available_accounts.get(params[:id])
+      @account.callbacks << callback
+      @account.save
+      flash['info'] = "Callback successfully registred."
+      redirect url('/accounts/%s/callbacks' % @account.id)
+    end
+
+    get '/accounts/:id/callbacks/:callback_id/delete' do
+      account = current_user.available_accounts.get(params[:id])
+      callback = account.callbacks.get(params[:callback_id])
+      callback.destroy
+      flash['info'] = 'Callback successfully removed.'
+      redirect url("/accounts/#{params[:id]}/callbacks")
+    end
+
+    get '/accounts/:id/callbacks/:callback_id/run' do
+      account = current_user.available_accounts.get(params[:id])
+      callback = account.callbacks.get(params[:callback_id])
+      callback.update(:state => :active)
+      Resque.enqueue(DeltaControl::Callback, callback.id)
+      flash['info'] = 'Callback queued to run.'
+      redirect url("/accounts/#{params[:id]}/callbacks")
+    end
+
     get '/logs/:id' do
       @log = current_user.available_accounts.map { |a| a.logs.get(params[:id]) }.compact.first
       haml :log

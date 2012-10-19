@@ -49,23 +49,29 @@ module DeltaControl
     property :created_by, Integer, :required => true
     property :updated_at, DateTime
     property :visibility, Enum[:private, :public], :default => :private
+    property :status, Enum[:active, :error, :unknown], :default => :unknown
 
     has n, :user_accounts
     has n, :users, :through => :user_accounts
     has n, :logs
+    has n, :callbacks
 
     def owner
       User.get(created_by)
     end
 
+    def client
+      Deltacloud::Library.new(
+        driver.to_sym,
+        :user => username,
+        :password => password,
+        :provider => provider.empty? ? nil : provider
+      )
+    end
+
     def healthy?
       begin
-        !Deltacloud::Library.new(
-          driver.to_sym,
-          :user => username,
-          :password => password,
-          :provider => provider.empty? ? nil : provider
-        ).realms.empty?
+        !client.realms.empty?
       rescue => e
         p e.message
         false

@@ -1,0 +1,25 @@
+- @title = 'New Callback'
+
+%ul.breadcrumb
+  %li
+    %a{ :href => url('/accounts')} Accounts
+    %span.divider='/'
+  %li
+    %a{ :href => url('/accounts/%s' % @account.id)}=@account.name
+    %span.divider='/'
+  %li
+    %a{ :href => url('/accounts/%s/callbacks' % @account.id)} Callbacks
+    %span.divider='/'
+  %li.active New Callback
+
+%form{ :action => url('/accounts/%s/callbacks' % @account.id), :method => :post, :class => 'form-horizontal well' }
+  - cgroup :resource, 'Resource name' do
+    %input{ :type => 'text', :name => 'callback[resource]', :id => :resource }
+  - cgroup :resource_id, 'Resource ID' do
+    %input{ :type => 'text', :name => 'callback[resource_id]', :id => :resource_id }
+  - cgroup :condition, 'Condition' do
+    %input{ :type => 'text', :name => 'callback[condition]', :id => :condition }
+  - cgroup :url, 'URL' do
+    %input{ :type => 'text', :name => 'callback[url]', :id => :url }
+  - cgroup :submit do
+    %button{ :type => :submit, :class => 'btn btn-primary'} Continue

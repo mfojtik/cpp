@@ -1,0 +1,37 @@
+%ul.breadcrumb
+  %li
+    %a{ :href => url('/accounts')} Accounts
+    %span.divider='/'
+  %li
+    %a{ :href => url('/accounts/%s' % @account.id)}=@account.name
+    %span.divider='/'
+  %li.active Callbacks
+
+%table#accounts.table.table-bordered.table-striped.table-condensed
+  %thead
+    %tr.well
+      %th ID
+      %th Resource
+      %th Resource ID
+      %th Condition
+      %th Notify URL
+      %th Retries
+      %th State
+      %th{:style => 'width:180px;'}
+        %a{ :href => url('/accounts/%s/callbacks/new' % @account.id), :class => 'btn btn-primary'} Create
+  %tbody
+    - @callbacks.each do |c|
+      %tr
+        %td=c.id
+        %td
+          %strong=c.resource
+        %td
+          %em=c.resource_id
+        %td
+          %code=c.condition
+        %td=c.url
+        %td=c.retries
+        %td=c.state
+        %td
+          %a{ :href => url('/accounts/%s/callbacks/%s/run' % [@account.id, c.id]), :class => 'btn'} Queue
+          %a{ :href => url('/accounts/%s/callbacks/%s/delete' % [@account.id, c.id]), :class => 'btn btn-danger'} Delete

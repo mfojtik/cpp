@@ -1,3 +1,25 @@
-#!/bin/sh
+#!/usr/bin/ruby
 
-thin -R config.ru start
+thin_pid = fork {
+  system("thin -R config.ru start")
+}
+
+scheduler_pid = fork {
+  system("rake resque:scheduler")
+}
+
+worker_pid = fork {
+  system("TERM_CHILD=1 QUEUES=* rake resque:work")
+}
+
+trap("INT") {
+  puts "Terminating all processes..."
+  Process.kill("HUP", scheduler_pid)
+  Process.wait(scheduler_pid)
+  Process.kill("HUP", worker_pid)
+  Process.wait(worker_pid)
+  Process.kill("INT", thin_pid)
+  Process.wait(thin_pid)
+}
+
+Process.wait rescue Errno::ECHILD

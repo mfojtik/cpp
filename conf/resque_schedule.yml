@@ -1,0 +1,6 @@
+---
+queue_callbacks:
+  every: 30s
+  class: CallBackJob
+  queue: high
+  description: "This job will fetch the resources registred for callbacks"

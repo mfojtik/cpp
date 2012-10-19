@@ -15,6 +15,14 @@ $:.unshift File.dirname(__FILE__)
 
 require './app'
 
+require 'resque'
+require 'resque/server'
+require 'resque_scheduler'
+require 'resque_scheduler/server'
+
+Resque.schedule = YAML.load_file(File.join(File.dirname(__FILE__), 'conf', 'resque_schedule.yml'))
+Resque.redis = "localhost:6379"
+
 DeltaControl.db_init
 
 require './lib/rack/rack_overide_deltacloud_auth'
@@ -26,6 +34,7 @@ run Rack::Builder.new {
   use Rack::APILogger
   run Rack::URLMap.new(
     '/' => DeltaControl::App,
-    '/api' => Deltacloud[:deltacloud].klass
+    '/api' => Deltacloud[:deltacloud].klass,
+    "/resque" => Resque::Server.new
   )
 }

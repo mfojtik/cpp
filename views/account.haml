@@ -1,4 +1,10 @@
-- @title = "<a href='#{url('/accounts')}'>Accounts</a> / " + @account.name
+- @title = @account.name
+
+%ul.breadcrumb
+  %li
+    %a{ :href => url('/accounts')} Accounts
+    %span.divider='/'
+  %li.active=@account.name
 
 .row-fluid
   .span6
@@ -26,6 +32,10 @@
   .span6
     %table.table
       %tbody
+        %tr
+          %th
+            %a{:href => url('/accounts/%s/callbacks' % @account.id)} Callbacks
+          %td=@account.callbacks.size
         %tr
           %th # of requests
           %td=@account.logs.count
